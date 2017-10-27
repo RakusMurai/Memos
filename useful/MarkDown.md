@@ -4,10 +4,6 @@
 VSCodeにはデフォルト機能でmdファイルのプレビュー機能がついてます。  
 * MarkDownプレビューを表示(Ctrl+Shift+v)  
 
-MarkDown記法の原文については、[Daring Fireball: Markdown Syntax Documentation]
-(http://daringfireball.net/projects/markdown/syntax.php)をご覧下さい。
-また、コードに関する記法は[GitHub Flavored Markdown](http://github.github.com/github-flavored-markdown/)に準拠しています。**
-
 ## VSCodeの設定
 上記のようにデフォルトでプレビューは可能ですが、より実用的になるよう拡張機能を利用します。  
 VSCodeのMarketPlaceから [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) をインストールします。  

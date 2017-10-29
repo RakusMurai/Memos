@@ -9,6 +9,7 @@
         - [Debugger for Java](#debugger-for-java)
         - [ESLint](#eslint)
         - [Java Extension Pack](#java-extension-pack)
+        - [Java Language Support](#java-language-support)
         - [jQuery Code Snippets](#jquery-code-snippets)
         - [Language support for Java ™ for Visual Studio Code](#language-support-for-java-%E2%84%A2-for-visual-studio-code)
         - [Markdown All in One](#markdown-all-in-one)
@@ -40,6 +41,10 @@ Javaのデバック機能。
 ### Java Extension Pack
 Javaの必要機能を一括インストールする。  
 具体的には [Language support for Java ™ for Visual Studio Code](#language-support-for-java-%E2%84%A2-for-visual-studio-code)と[Debugger for Java](#debugger-for-java)をインストール。
+
+### Java Language Support
+Javaの補完機能拡張。  
+インストールすることでクラスパスに含まれた依存関係のあるJarファイルの補完、インポートが可能になる。
 
 ### jQuery Code Snippets
 jQueryの補完機能。  

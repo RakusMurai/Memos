@@ -40,7 +40,8 @@ Javaのデバック機能。
 
 ### Java Extension Pack
 Javaの必要機能を一括インストールする。  
-具体的には [Language support for Java ™ for Visual Studio Code](#language-support-for-java-%E2%84%A2-for-visual-studio-code)と[Debugger for Java](#debugger-for-java)をインストール。
+具体的には [Language support for Java ™ for Visual Studio Code](#language-support-for-java-%E2%84%A2-for-visual-studio-code)と[Debugger for Java](#debugger-for-java)をインストール。  
+導入するとうまく補完が利かなくなる時が…その場合は一度オフに。
 
 ### Java Language Support
 Javaの補完機能拡張。  

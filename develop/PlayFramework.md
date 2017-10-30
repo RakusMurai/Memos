@@ -29,6 +29,8 @@
         - [application.conf](#applicationconf)
         - [bulid.sbt](#bulidsbt)
         - [project/plugins.sbt](#projectpluginssbt)
+    - [debug](#debug)
+    - [設定完了](#%E8%A8%AD%E5%AE%9A%E5%AE%8C%E4%BA%86)
 
 <!-- /TOC -->
 ## 導入環境
@@ -137,6 +139,8 @@ http://localhost:9000でトップに移動する。
 
 ## PlayFrameworkの編集
 MVCアーキテクチャ。  
+不要なカプセル化を避ける方向で、変数もpublicで持つことが多い。  
+privateだとgetter,setterを用意する分コードが冗長になることを避ける。  
 App/viewsにviewsが、App/CotrillersにControllerクラスができている。  
 Modelは自分で作成していく。
 
@@ -292,3 +296,27 @@ SBTタブのlibraryDependenciesの｛｝の中を上記のようにコピペ
     clean  
     eclipse
 を実行し、IDEを再起動する。
+
+## debug
+デバックモードでの起動方法。
+
+    cd ~/アプリケーション名
+    activator activator -jvm-debug 9999 run
+を実行。デバックモードで立ち上がる。  
+VSCodeのデバックバーを表示し、launch.jsonをデバックバー上部からlaunch.jsonを編集。  
+launch.josn
+
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Attach)",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 9999
+        }
+    ]
+port9999がデバックポートになっており、ブレイクポイントに対応できるようになる。  
+追加したデバックモードでVSCodeのデバックを実行すると、デバックができる。
+
+## 設定完了
+ここまで導入すると、インストールから実行、フォームの受け取り、DB設定が完了する。

@@ -3,6 +3,7 @@
 
 - [VSCode設定](#vscode%E8%A8%AD%E5%AE%9A)
     - [設定手順](#%E8%A8%AD%E5%AE%9A%E6%89%8B%E9%A0%86)
+    - [基本設定](#%E5%9F%BA%E6%9C%AC%E8%A8%AD%E5%AE%9A)
     - [導入済み拡張機能一覧](#%E5%B0%8E%E5%85%A5%E6%B8%88%E3%81%BF%E6%8B%A1%E5%BC%B5%E6%A9%9F%E8%83%BD%E4%B8%80%E8%A6%A7)
         - [Beautify](#beautify)
         - [Code Runner](#code-runner)
@@ -21,7 +22,11 @@
 <!-- /TOC -->
 
 ## 設定手順
-基本的にはMarketPlaceからインストールを行う。
+基本的にはMarketPlaceからインストールを行う。  
+
+## 基本設定
+  "editor.snippetSuggestions": "top" 補完機能がローカルに優先して表示される。
+
 
 ## 導入済み拡張機能一覧
 
@@ -57,7 +62,7 @@ VSCodeでJavaを触るなら必須パッケージ。
 Pathの通し方は別途。   
 
 ### Markdown All in One
-MarkDown形式のコード補完をする。  
+MarkDown形式のコード補完をする。  v
 それ以上に、MarkDownのOUTLINEが便利。
 
 ### Markdown TOC

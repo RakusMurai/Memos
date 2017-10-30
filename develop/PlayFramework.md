@@ -19,7 +19,16 @@
         - [Controller](#controller)
         - [View](#view)
         - [route](#route)
-        - [フォーム](#%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0)
+    - [データのやり取り](#%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E3%82%84%E3%82%8A%E5%8F%96%E3%82%8A)
+        - [コントローラの準備](#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%81%AE%E6%BA%96%E5%82%99)
+        - [HTML](#html)
+            - [@helper](#helper)
+        - [コントローラの受け取り](#%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AD%E3%83%BC%E3%83%A9%E3%81%AE%E5%8F%97%E3%81%91%E5%8F%96%E3%82%8A)
+    - [DB](#db)
+        - [Ebean](#ebean)
+        - [application.conf](#applicationconf)
+        - [bulid.sbt](#bulidsbt)
+        - [project/plugins.sbt](#projectpluginssbt)
 
 <!-- /TOC -->
 ## 導入環境
@@ -127,8 +136,9 @@ Playコンソールで
 http://localhost:9000でトップに移動する。
 
 ## PlayFrameworkの編集
-MVCアーキテクチャで編集する。  
-App/serviceにModelが、App/viewsにviewsが、App/CotrillersにControllerクラスができている。  
+MVCアーキテクチャ。  
+App/viewsにviewsが、App/CotrillersにControllerクラスができている。  
+Modelは自分で作成していく。
 
 ### Controller
 App/Controllersに
@@ -175,14 +185,110 @@ conf/routeファイルでリクエストマッピング
     GET  /  controllers.Controller名.index
 でgetリクエスト、「/」が来たらコントローラ名クラスのindexメソッドが呼ばれる。
 
-### フォーム
+## データのやり取り
+### コントローラの準備
+play.data.Form<T>クラスをフィールド変数に持つ。  
+@Injectをつけたコンストラクタ(play.data.FormFactory
+)を作り、フィールド変数に代入。
+
+    private Form<SampleForm> form;
+    @Inject
+    public Application(FormFactory formFactory) {
+        this.form = formFactory.form(SampleForm.class);   
+    }
+これでアプリケーション起動時にフォームオブジェクトが生成される。  
+このフィールド変数をRenderの引数に入れてフォワードすると、入力可能になる。
+
+    public Result index() {
+        return ok(index.render("何か書いて", form));
+    }
+
+### HTML
 @(form:Form[Application.sampleForm])でフォームクラスを受けとる。  
-@helper.form(action=routes.Application.send)=>サブミットしたときに呼び出すメソッド。
-{ @(helper.inputText=>インプットタイプ
-( form("message") ))=>フォームクラスのフィールド名、そこに入力値が入る。
-<input type="submit"> } }
+通常のHTMLタグを利用してform、inputを作成。  
+formオブジェクトのプロパティ名がinputタグのname属性。
 
+#### @helper
+以下のコードをHTMLに記入すると自動でformを作成してくれる。
 
+    @helper.form(action=routes.Application.send){@(helper.inputText(form("message") ))<input type="submit"> } }
+@helper.form(action=routes.・・・)=>送信先。  
+@helper.inputType(form("message"))=>inputTypeでinputのType属性、かっこの中でフォームのプロパティを指定。  
+簡単なものなら生成できるが、プロパティ名の消し方不明のため、タグで書いたほうが早い。
 
+### コントローラの受け取り
+フィールド変数のplay.data.Form<T>クラスのbindFromRequest().get()メソッドを使うとリクエストに含まれるデータを受けとれる。  
+get()の受け取りはフィールド変数Form<T>のT型。  
+    public Result send() {
+        SampleForm sampleForm = form.bindFromRequest().get();
+        return ok(index.render(sampleForm.getMessage(), form.fill(sampleForm)));
+    }
+Form<T>のfill(T)を渡すと、フォームの中にあらかじめデータを入れて送信できる。  
 
+## DB
+### Ebean
+DBアクセスを楽にしてくれる機能。  
+DB設定と同時に導入していく。
 
+### application.conf
+デフォルト340行目～（不要行削除）
+    
+    db {
+      #default.driver = org.h2.Driver
+      #default.url = "jdbc:h2:mem:play"
+      #default.username = sa
+      #default.password = ""
+      #default.logSql=true
+    }
+の部分にDBアクセス先情報を入力していく。  
+まずは#を外してコメントアウトを解除する。  
+PostgreSQL用
+
+    default.driver = org.postgresql.Driver
+    default.url = "jdbc:postgresql://ホスト名:ポート番号/DB名"
+    default.username = ユーザ名
+    default.password = "パスワード"
+    default.logSql=true
+1行目=>PostgreSQLドライバの指定。  
+2行目=>DBサーバの指定。  
+3行目=>サーバアクセスのユーザ名。  
+4行目=>サーバアクセスのパスワード("")。   
+5行目=>sqlのLogの保存設定。
+
+db{}の下に
+    ebean.default = ["models.*"]
+を追加。ebeanの検索フォルダを指定する。  
+ebeanについては後述。
+
+### bulid.sbt
+
+    lazy val myProject = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
+に変更(PlayJavaの後に「, PlayEbean」を追加)。  
+
+    libraryDependencies ++= Seq(javaJdbc,cache,javaWs)   
+でアプリで使用している項目を指定できる。  
+postgreSQL用
+
+    libraryDependencies++= Seq(... ,
+        evolutions,
+        "org.postgresql" % "postgresql" % "42.1.4"
+    )
+を追加。
+MVN-Repojitoryで必要ソフト(今回はPostgreSQLの最新版)を検索。  
+SBTタブのlibraryDependenciesの｛｝の中を上記のようにコピペ  
+または、libraryDependencies+=全体を上記コードの下に追加する。  
+追加するとコンパイル時に必要Jarファイルを自動でダウンロードしてくる。
+
+### project/plugins.sbt
+
+    addSbtPlugin("com.typesafe.sbt" % "sbt-play-ebean" % "3.2.0")
+を追加(コメントアウトされているものを外すでもOK）。
+3.2.0が現状一番安定している。  
+不用意にVersionをあげてもエラーをはく。  
+3時間以上はまりました。
+
+ソースコードを編集する前に
+
+    clean  
+    eclipse
+を実行し、IDEを再起動する。

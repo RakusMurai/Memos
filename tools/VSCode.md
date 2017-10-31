@@ -9,6 +9,7 @@
         - [Code Runner](#code-runner)
         - [Debugger for Java](#debugger-for-java)
         - [ESLint](#eslint)
+        - [Git History (git log)](#git-history-git-log)
         - [Java Extension Pack](#java-extension-pack)
         - [Java Language Support](#java-language-support)
         - [jQuery Code Snippets](#jquery-code-snippets)
@@ -42,6 +43,10 @@ Javaのデバック機能。
 
 ### ESLint
 別途Node.jsが必要。
+
+### Git History (git log)
+Git拡張機能  
+コミット履歴の表示や、指定コミットへ戻すことができる。
 
 ### Java Extension Pack
 Javaの必要機能を一括インストールする。  
